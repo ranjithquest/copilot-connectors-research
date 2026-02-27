@@ -50,11 +50,11 @@ export default async function HomePage({
   const isNewsletter = view !== "web";
 
   if (isNewsletter) {
-    // Shared label style for section eyebrows
+    // Shared label style for section eyebrows — Fluent Caption1
     const SL: React.CSSProperties = {
-      fontSize: 10, fontWeight: 700, color: "#0078D4",
-      letterSpacing: "0.08em", textTransform: "uppercase",
-      display: "flex", alignItems: "center", gap: 6, marginBottom: 14,
+      fontSize: 11, fontWeight: 700, color: "#0078D4",
+      letterSpacing: "0.10em", textTransform: "uppercase",
+      display: "flex", alignItems: "center", gap: 6, marginBottom: 16,
     };
     const sectionCard: React.CSSProperties = {
       background: "#fff",
@@ -64,72 +64,79 @@ export default async function HomePage({
     };
 
     return (
-      <div style={{ background: "#f0f4f8", minHeight: "100vh" }}>
+      <div style={{ background: "#f5f5f5", minHeight: "100vh" }}>
 
-        {/* ── 1. HEADER ─────────────────────────────────── */}
-        <div style={{
-          background: "#fff",
-          borderBottom: "1px solid #e8edf2",
-          padding: "22px 32px",
-        }}>
-          <div style={{ maxWidth: 980, margin: "0 auto" }}>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
-              <div>
-                <h1 style={{ fontSize: "clamp(1.2rem, 2.5vw, 1.6rem)", fontWeight: 800, color: "#0f172a", letterSpacing: "-0.03em", lineHeight: 1.1, margin: 0 }}>
-                  Connector Admin <span className="copilot-text">Experience</span>
-                </h1>
-                <p style={{ fontSize: 12, color: "#94a3b8", margin: "4px 0 0" }}>
-                  Research Brief · EY, Alpha Bank &amp; more
-                </p>
-              </div>
+        {/* ── 1. HEADER / HERO ──────────────────────────── */}
+        <div className="nl-outer-pad" style={{ paddingBottom: 0 }}>
+          <div style={{
+            backgroundImage: `linear-gradient(rgba(255,255,255,0.18), rgba(255,255,255,0.18)), url(https://cdn-dynmedia-1.microsoft.com/is/image/microsoftcorp/1076601-HeroBackground-1600x720?resMode=sharp2&op_usm=1.5,0.65,15,0&wid=1600&hei=720&qlt=100&fit=constrain)`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            padding: "clamp(32px, 7vw, 56px) 28px",
+            textAlign: "center",
+            borderRadius: 14,
+            overflow: "hidden",
+          }}>
+            {/* Main title */}
+            <h1 style={{ fontSize: "clamp(1.6rem, 3.5vw, 2.4rem)", fontWeight: 700, letterSpacing: "-0.03em", lineHeight: 1.1, margin: 0, color: "#1B1B1B" }}>
+              Copilot Connector <span className="copilot-text">Research</span>
+            </h1>
+            {/* Sub-heading + session count */}
+            <p style={{ fontSize: 15, color: "#616161", margin: "6px 0 0", fontWeight: 500 }}>
+              Admin Experience
+            </p>
+            <p style={{ fontSize: 12, color: "#888", margin: "4px 0 0", fontWeight: 400 }}>
+              12 Admin sessions · 8 Companies · Jan &amp; Feb
+            </p>
+            {/* Customer logo strip */}
+            <div style={{ marginTop: 16, display: "flex", flexWrap: "wrap", justifyContent: "center", alignItems: "center", gap: "8px 14px" }}>
+              {[
+                { name: "COHESITY",       color: "#1B1B1B", accent: "#00B140", accentOn: "S" },
+                { name: "nationalgrid",   color: "#005EB8"                                    },
+                { name: "EY",             color: "#1B1B1B", bg: "#FFE600", pad: true          },
+                { name: "ABB",            color: "#FF000F"                                    },
+                { name: "charles schwab", color: "#fff",    bg: "#00A0DF", pad: true          },
+                { name: "ARM",            color: "#00A9CE"                                    },
+                { name: "DOW",            color: "#fff",    bg: "#CC0000", pad: true          },
+                { name: "UCB",            color: "#003087"                                    },
+                { name: "BNY",            color: "#003087"                                    },
+              ].map((co) => (
+                <span key={co.name} style={{
+                  display: "inline-flex", alignItems: "center",
+                  fontSize: co.pad ? 11 : 12,
+                  fontWeight: 700,
+                  letterSpacing: co.name === co.name.toUpperCase() ? "0.04em" : 0,
+                  color: co.color,
+                  background: co.bg ?? "rgba(255,255,255,0.55)",
+                  borderRadius: 6,
+                  padding: "3px 8px",
+                  backdropFilter: "blur(4px)",
+                  border: co.bg ? "none" : "1px solid rgba(0,0,0,0.08)",
+                }}>
+                  {co.accentOn
+                    ? co.name.split(co.accentOn).map((part, i) =>
+                        i === 0
+                          ? <span key={i}>{part}<span style={{ color: co.accent }}>{co.accentOn}</span></span>
+                          : <span key={i}>{part}</span>
+                      )
+                    : co.name
+                  }
+                </span>
+              ))}
             </div>
           </div>
         </div>
 
-        <div style={{ maxWidth: 980, margin: "0 auto", padding: "24px 32px 32px" }}>
+        <div className="nl-outer-pad">
 
-          {/* ── 2. THEMES (full width, 2-col grid of cards) ── */}
+          {/* ── 2. JOURNEY STAGES + PAIN MAP (full width) ──── */}
           <div style={{ ...sectionCard, marginBottom: 20 }}>
             <p style={SL}>
               <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#0078D4", display: "inline-block" }} />
-              Cross-Stage Themes
-            </p>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10 }}>
-              {themes.map((theme) => (
-                <div key={theme.slug} style={{
-                  borderLeft: `3px solid ${priorityColors[theme.priority] ?? "#94A3B8"}`,
-                  background: `${priorityColors[theme.priority] ?? "#94A3B8"}08`,
-                  borderRadius: "0 8px 8px 0",
-                  padding: "10px 12px",
-                }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap", marginBottom: 3 }}>
-                    <span style={{ fontSize: 12, fontWeight: 700, color: "#0f172a" }}>{theme.title}</span>
-                    <span style={{
-                      fontSize: 9, fontWeight: 700,
-                      color: priorityColors[theme.priority],
-                      background: `${priorityColors[theme.priority]}22`,
-                      padding: "2px 7px", borderRadius: 999,
-                    }}>
-                      {theme.priority}
-                    </span>
-                  </div>
-                  <p style={{ fontSize: 11, color: "#64748b", lineHeight: 1.4, margin: 0 }}>{theme.subtitle}</p>
-                  <p style={{ fontSize: 9, color: "#94a3b8", marginTop: 4 }}>
-                    {theme.findingIds.length} findings · stages {theme.affectedStages.join(", ")}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* ── 3. JOURNEY STAGES + PAIN MAP (full width) ──── */}
-          <div style={{ ...sectionCard, marginBottom: 20 }}>
-            <p style={SL}>
-              <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#0078D4", display: "inline-block" }} />
-              Copilot Connector Experience Analysis
+              Customer Experience Analysis
             </p>
             {/* 5 stage summary cards in a horizontal row */}
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 10, marginBottom: 20 }}>
+            <div className="nl-stages-grid">
               {stages.map((stage) => {
                 const hc = stage.findings.filter(f => f.priority === "HIGH").length;
                 const mc = stage.findings.filter(f => f.priority === "MEDIUM").length;
@@ -139,28 +146,20 @@ export default async function HomePage({
                     borderRadius: 10, padding: "12px 14px",
                   }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
-                      <span style={{
-                        width: 24, height: 24, borderRadius: "50%",
-                        background: "#0078D4", color: "#fff",
-                        display: "flex", alignItems: "center", justifyContent: "center",
-                        fontSize: 11, fontWeight: 700, flexShrink: 0,
-                      }}>
-                        {stage.number}
-                      </span>
                       <div style={{ display: "flex", gap: 3 }}>
                         {hc > 0 && (
-                          <span style={{ fontSize: 9, fontWeight: 700, color: "#EE5091", background: "#EE509115", border: "1px solid #EE509130", padding: "1px 6px", borderRadius: 999 }}>
+                          <span style={{ fontSize: 10, fontWeight: 700, color: "#EE5091", background: "#EE509115", border: "1px solid #EE509130", padding: "1px 7px", borderRadius: 999 }}>
                             {hc}H
                           </span>
                         )}
                         {mc > 0 && (
-                          <span style={{ fontSize: 9, fontWeight: 700, color: "#FC7942", background: "#FC794215", border: "1px solid #FC794230", padding: "1px 6px", borderRadius: 999 }}>
+                          <span style={{ fontSize: 10, fontWeight: 700, color: "#FC7942", background: "#FC794215", border: "1px solid #FC794230", padding: "1px 7px", borderRadius: 999 }}>
                             {mc}M
                           </span>
                         )}
                       </div>
                     </div>
-                    <p style={{ fontSize: 11, fontWeight: 700, color: "#0f172a", lineHeight: 1.3, margin: 0 }}>{stage.title}</p>
+                    <p style={{ fontSize: 14, fontWeight: 600, color: "#0f172a", lineHeight: 1.35, margin: 0 }}>{stage.title}</p>
                   </div>
                 );
               })}
@@ -168,6 +167,40 @@ export default async function HomePage({
             {/* Pain map chart — full width */}
             <div style={{ borderTop: "1px solid #f1f5f9", paddingTop: 16 }}>
               <JourneyPainChart points={chartPoints} />
+            </div>
+          </div>
+
+          {/* ── 3. THEMES (full width, 2-col grid of cards) ── */}
+          <div style={{ ...sectionCard, marginBottom: 20 }}>
+            <p style={SL}>
+              <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#0078D4", display: "inline-block" }} />
+              Critical Themes Identified
+            </p>
+            <div className="nl-themes-grid">
+              {themes.map((theme) => (
+                <div key={theme.slug} style={{
+                  borderLeft: `3px solid ${priorityColors[theme.priority] ?? "#94A3B8"}`,
+                  background: `${priorityColors[theme.priority] ?? "#94A3B8"}08`,
+                  borderRadius: "0 8px 8px 0",
+                  padding: "10px 12px",
+                }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap", marginBottom: 5 }}>
+                    <span style={{ fontSize: 15, fontWeight: 600, color: "#0f172a" }}>{theme.title}</span>
+                    <span style={{
+                      fontSize: 10, fontWeight: 700,
+                      color: priorityColors[theme.priority],
+                      background: `${priorityColors[theme.priority]}22`,
+                      padding: "2px 8px", borderRadius: 999,
+                    }}>
+                      {theme.priority}
+                    </span>
+                  </div>
+                  <p style={{ fontSize: 13, color: "#64748b", lineHeight: 1.5, margin: 0 }}>{theme.subtitle}</p>
+                  <p style={{ fontSize: 11, color: "#94a3b8", marginTop: 6 }}>
+                    {theme.findingIds.length} findings · stages {theme.affectedStages.join(", ")}
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
 
@@ -186,18 +219,10 @@ export default async function HomePage({
                   padding: "8px 12px", marginBottom: 10,
                   border: "1px solid #e8edf2",
                 }}>
-                  <span style={{
-                    width: 20, height: 20, borderRadius: "50%",
-                    background: "#243A5E", color: "#fff",
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    fontSize: 10, fontWeight: 700, flexShrink: 0,
-                  }}>
-                    {stage.number}
-                  </span>
-                  <span style={{ fontSize: 12, fontWeight: 700, color: "#243A5E" }}>{stage.title}</span>
+                  <span style={{ fontSize: 15, fontWeight: 600, color: "#243A5E" }}>{stage.title}</span>
                 </div>
                 {/* 2-col findings grid */}
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4px 24px" }}>
+                <div className="nl-findings-grid">
                   {stage.findings.map((f, fi) => (
                     <div key={f.id} style={{
                       display: "flex", alignItems: "flex-start", gap: 8,
@@ -207,19 +232,19 @@ export default async function HomePage({
                       border: "1px solid #f1f5f9",
                     }}>
                       <span style={{
-                        fontSize: 9, fontWeight: 700,
+                        fontSize: 10, fontWeight: 700,
                         color: priorityColors[f.priority],
                         background: `${priorityColors[f.priority]}15`,
                         border: `1px solid ${priorityColors[f.priority]}35`,
-                        padding: "2px 6px", borderRadius: 999,
+                        padding: "2px 7px", borderRadius: 999,
                         whiteSpace: "nowrap", marginTop: 1, flexShrink: 0,
                       }}>
                         {f.priority === "INFO" ? "CTX" : f.priority === "MEDIUM" ? "MED" : "HIGH"}
                       </span>
-                      <span style={{ color: "#c0cad6", fontSize: 10, fontWeight: 700, minWidth: 28, marginTop: 1, flexShrink: 0 }}>{f.id}</span>
+                      <span style={{ color: "#c0cad6", fontSize: 11, fontWeight: 600, minWidth: 30, marginTop: 1, flexShrink: 0 }}>{f.id}</span>
                       <div style={{ minWidth: 0 }}>
-                        <p style={{ fontSize: 12, fontWeight: 600, color: "#1e293b", lineHeight: 1.35, margin: 0 }}>{f.title}</p>
-                        <p style={{ fontSize: 10, color: "#8A50D8", marginTop: 3, lineHeight: 1.35 }}>→ {f.fix}</p>
+                        <p style={{ fontSize: 14, fontWeight: 600, color: "#1e293b", lineHeight: 1.45, margin: 0 }}>{f.title}</p>
+                        <p style={{ fontSize: 13, color: "#8A50D8", marginTop: 4, lineHeight: 1.45 }}>→ {f.fix}</p>
                       </div>
                     </div>
                   ))}
@@ -229,16 +254,25 @@ export default async function HomePage({
           </div>
 
           {/* ── 5. CUSTOMER VOICES ────────────────────────── */}
-          <div style={sectionCard}>
+          <div style={{ ...sectionCard, marginBottom: 20 }}>
             <p style={SL}>
               <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#0078D4", display: "inline-block" }} />
               Customer Voices
             </p>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(270px, 1fr))", gap: 14 }}>
               {stages.map((stage) => (
-                <QuoteBlock key={stage.number} quote={stage.quote} attribution={`${stage.quoteAttribution} · Stage ${stage.number}`} />
+                <QuoteBlock key={stage.number} quote={stage.quote} attribution={stage.quoteAttribution} />
               ))}
             </div>
+          </div>
+
+          {/* ── 6. ADO PLANNING ───────────────────────────── */}
+          <div style={sectionCard}>
+            <p style={SL}>
+              <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#0078D4", display: "inline-block" }} />
+              ADO Planning Links
+            </p>
+            <AdoSection items={adoPlanningItems} />
           </div>
 
         </div>
@@ -265,15 +299,13 @@ export default async function HomePage({
         }}
       >
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 py-8 w-full text-center">
-          <h1 className="font-bold text-white leading-[1.1] tracking-tight mb-5"
+          <h1 className="font-bold text-white leading-[1.1] tracking-tight mb-2"
             style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}>
-            Connector Admin{" "}
-            <span className="copilot-text">Experience</span>
+            Copilot Connector{" "}
+            <span className="copilot-text">Research</span>
           </h1>
-          <p className="text-white/70 text-base leading-relaxed mb-8 mx-auto" style={{ maxWidth: "34rem" }}>
-            Deep-dive research across the full admin journey — from first discovery to ongoing
-            management — spanning enterprise customers including EY, Alpha Bank, and more.
-          </p>
+          <p className="text-white/90 text-lg font-medium mb-1">Admin Experience</p>
+          <p className="text-white/55 text-sm mb-8">12 Admin sessions · 8 Companies · Jan &amp; Feb</p>
           <div className="flex flex-wrap items-center justify-center gap-3">
             <a href="#pain-map"
               className="px-7 py-3 rounded-full text-sm font-semibold text-white transition-all hover:-translate-y-0.5"
@@ -289,17 +321,35 @@ export default async function HomePage({
         </div>
       </section>
 
-      {/* ── JOURNEY PAIN MAP ───────────────────────────── */}
+      {/* ── CUSTOMER EXPERIENCE ANALYSIS ────────────────── */}
       <section id="pain-map" className="py-10 sm:py-16"
         style={bgImage(IMG.painMap, "rgba(255,255,255,0.82), rgba(255,255,255,0.82)")}>
         <div className="max-w-5xl mx-auto px-4 sm:px-6 text-center">
-          <p className="eyebrow mb-3 text-slate-500">Journey Pain Map</p>
+          <p className="eyebrow mb-3 text-slate-500">Customer Experience Analysis</p>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 leading-tight mb-2">
             Where Customers Are Struggling Most
           </h2>
           <p className="text-slate-500 text-sm sm:text-base mb-8 max-w-lg mx-auto">
             Pain severity mapped across all 5 stages. Hover each circle for the full finding.
           </p>
+          {/* Stage summary cards */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 mb-8 text-left">
+            {stages.map((stage) => {
+              const hc = stage.findings.filter(f => f.priority === "HIGH").length;
+              const mc = stage.findings.filter(f => f.priority === "MEDIUM").length;
+              return (
+                <div key={stage.number} className="bg-white rounded-xl border border-slate-200 p-3 shadow-sm">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="flex gap-1">
+                      {hc > 0 && <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full" style={{ color: "#EE5091", background: "#EE509115", border: "1px solid #EE509130" }}>{hc}H</span>}
+                      {mc > 0 && <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full" style={{ color: "#FC7942", background: "#FC794215", border: "1px solid #FC794230" }}>{mc}M</span>}
+                    </div>
+                  </div>
+                  <p className="text-sm font-semibold text-slate-900 leading-snug">{stage.title}</p>
+                </div>
+              );
+            })}
+          </div>
           <JourneyPainChart points={chartPoints} />
         </div>
       </section>

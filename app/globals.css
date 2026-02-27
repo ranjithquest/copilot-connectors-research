@@ -103,6 +103,33 @@
   }
 }
 
+/* ─── Newsletter responsive layout ───────────── */
+.nl-header-pad  { padding: 22px 32px; }
+.nl-outer-pad   { max-width: 980px; margin: 0 auto; padding: 24px 32px 32px; }
+
+.nl-stages-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.nl-themes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+}
+.nl-findings-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 24px;
+}
+
+@media (max-width: 600px) {
+  .nl-header-pad  { padding: 16px; }
+  .nl-outer-pad   { padding: 14px 14px 20px; }
+  .nl-findings-grid { grid-template-columns: 1fr; }
+}
+
 /* ─── Scrollbar ───────────────────────────────── */
 ::-webkit-scrollbar { width: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }

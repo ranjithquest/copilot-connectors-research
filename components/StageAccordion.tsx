@@ -6,7 +6,6 @@ import { FindingItem } from "./FindingItem";
 import { QuoteBlock } from "./QuoteBlock";
 
 // One Copilot color per stage (cycling through the palette)
-const stageColors = ["#199FD7", "#8A50D8", "#EE5091", "#FC7942", "#99BD3C"];
 const stageGradients = [
   "linear-gradient(135deg, #199FD7, #8A50D8)",
   "linear-gradient(135deg, #8A50D8, #EE5091)",
@@ -22,7 +21,6 @@ interface StageAccordionProps {
 function StageRow({ stage, isOpen, onToggle }: { stage: Stage; isOpen: boolean; onToggle: () => void }) {
   const highCount = stage.findings.filter((f) => f.priority === "HIGH").length;
   const medCount  = stage.findings.filter((f) => f.priority === "MEDIUM").length;
-  const color    = stageColors[stage.number - 1];
   const gradient = stageGradients[stage.number - 1];
 
   return (
@@ -42,14 +40,6 @@ function StageRow({ stage, isOpen, onToggle }: { stage: Stage; isOpen: boolean; 
         className="w-full flex items-center gap-3 sm:gap-4 px-4 sm:px-6 py-4 sm:py-5 text-left hover:bg-slate-50/70 transition-colors"
         aria-expanded={isOpen}
       >
-        {/* Number badge */}
-        <div
-          className="shrink-0 w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold text-sm"
-          style={{ background: gradient }}
-        >
-          {stage.number}
-        </div>
-
         {/* Title */}
         <div className="flex-1 min-w-0">
           <p className="eyebrow mb-0.5 text-slate-400">
