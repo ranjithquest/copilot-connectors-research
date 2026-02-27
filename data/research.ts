@@ -11,6 +11,7 @@ export interface Finding {
   fix: string;
   priority: Priority;
   themeSlug: string;
+  customers?: string[];
 }
 
 export interface Stage {
@@ -61,6 +62,7 @@ export const stages: Stage[] = [
         fix: "Surface connectors during agent creation + agent-based gallery recommendations",
         priority: "HIGH",
         themeSlug: "discoverability",
+        customers: ["Alpha Bank"],
       },
       {
         id: "H2",
@@ -70,6 +72,7 @@ export const stages: Stage[] = [
         fix: "Usage analytics dashboard + end-user-to-admin demand channel",
         priority: "HIGH",
         themeSlug: "feedback-loop",
+        customers: ["Alpha Bank"],
       },
       {
         id: "M1",
@@ -79,6 +82,7 @@ export const stages: Stage[] = [
         fix: "Scenario-based search and improved gallery taxonomy",
         priority: "MEDIUM",
         themeSlug: "discoverability",
+        customers: ["Alpha Bank"],
       },
       {
         id: "INFO1",
@@ -88,6 +92,7 @@ export const stages: Stage[] = [
         fix: "Simplify on-prem setup wizard and reduce time-to-first-success",
         priority: "INFO",
         themeSlug: "discoverability",
+        customers: ["Alpha Bank"],
       },
     ],
     quote: "We haven't used that agent because it was a waste of time for us after so many months.",
@@ -106,6 +111,7 @@ export const stages: Stage[] = [
         fix: "Guided on-prem setup wizard with network/security pre-checks",
         priority: "HIGH",
         themeSlug: "documentation",
+        customers: ["EY"],
       },
       {
         id: "H4",
@@ -115,6 +121,7 @@ export const stages: Stage[] = [
         fix: "Pre-built permission templates per connector, with step-by-step table role guide",
         priority: "HIGH",
         themeSlug: "auth-permissions",
+        customers: ["EY"],
       },
       {
         id: "H5",
@@ -124,6 +131,7 @@ export const stages: Stage[] = [
         fix: "ACL sync validator with clear identity mapping diagnostics",
         priority: "HIGH",
         themeSlug: "auth-permissions",
+        customers: ["EY"],
       },
       {
         id: "H6",
@@ -133,6 +141,7 @@ export const stages: Stage[] = [
         fix: "Multi-org ADO connector with centralized management",
         priority: "HIGH",
         themeSlug: "configuration-rigidity",
+        customers: ["EY"],
       },
       {
         id: "M2",
@@ -142,6 +151,7 @@ export const stages: Stage[] = [
         fix: "Inline editing for connector configuration without requiring rebuild",
         priority: "MEDIUM",
         themeSlug: "configuration-rigidity",
+        customers: ["EY"],
       },
       {
         id: "M3",
@@ -151,6 +161,7 @@ export const stages: Stage[] = [
         fix: "Scoped POC mode: limit index to 100 items, validate before full crawl",
         priority: "MEDIUM",
         themeSlug: "observability",
+        customers: ["EY"],
       },
     ],
     quote: "It took us probably a few weeks to get the ServiceNow connector set up.",
@@ -169,6 +180,7 @@ export const stages: Stage[] = [
         fix: "Compatibility check before connector creation; surface supported paths in agent builder",
         priority: "HIGH",
         themeSlug: "discoverability",
+        customers: ["Alpha Bank"],
       },
       {
         id: "H8",
@@ -178,6 +190,7 @@ export const stages: Stage[] = [
         fix: "Mandatory pre-crawl validation checklist: auth, connectivity, permissions, ACL",
         priority: "HIGH",
         themeSlug: "observability",
+        customers: ["Alpha Bank"],
       },
       {
         id: "H9",
@@ -187,6 +200,7 @@ export const stages: Stage[] = [
         fix: "Promote connector gallery to primary navigation; add scenario-based browsing",
         priority: "HIGH",
         themeSlug: "discoverability",
+        customers: ["Alpha Bank"],
       },
       {
         id: "M4",
@@ -196,6 +210,7 @@ export const stages: Stage[] = [
         fix: "Full OIDC and MFA support for all connectors; migration guide for existing setups",
         priority: "MEDIUM",
         themeSlug: "auth-permissions",
+        customers: ["Alpha Bank"],
       },
       {
         id: "M5",
@@ -205,6 +220,7 @@ export const stages: Stage[] = [
         fix: "Quarterly doc review cycle tied to product releases; in-product contextual help",
         priority: "MEDIUM",
         themeSlug: "documentation",
+        customers: ["Alpha Bank"],
       },
     ],
     quote:
@@ -224,6 +240,7 @@ export const stages: Stage[] = [
         fix: "Real-time crawl status: phase (identity/content/ACL), % complete, ETA, items indexed",
         priority: "HIGH",
         themeSlug: "observability",
+        customers: ["EY"],
       },
       {
         id: "H11",
@@ -233,6 +250,7 @@ export const stages: Stage[] = [
         fix: "ACL sync health indicator + self-serve diagnostic tool with remediation guidance",
         priority: "HIGH",
         themeSlug: "auth-permissions",
+        customers: ["EY"],
       },
       {
         id: "H12",
@@ -242,6 +260,7 @@ export const stages: Stage[] = [
         fix: "Fix edit flow; add config export/import to preserve settings across rebuilds",
         priority: "HIGH",
         themeSlug: "configuration-rigidity",
+        customers: ["EY"],
       },
       {
         id: "M6",
@@ -251,6 +270,7 @@ export const stages: Stage[] = [
         fix: "Search sandbox: test queries against indexed content before enablement",
         priority: "MEDIUM",
         themeSlug: "observability",
+        customers: ["EY"],
       },
     ],
     quote: "It took many, many days to do the full crawl, like 3–4 days to crawl the 13,000 items.",

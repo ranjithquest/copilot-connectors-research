@@ -3,44 +3,44 @@ import type { Finding } from "@/data/research";
 // Copilot-palette priority config
 const priorityConfig = {
   HIGH: {
-    bg: "rgba(238, 80, 145, 0.05)",
-    border: "#EE5091",
-    idBg: "rgba(238, 80, 145, 0.12)",
-    idColor: "#EE5091",
+    bg: "#ffffff",
+    border: "#D4789A",
+    idBg: "rgba(238,80,145,0.10)",
+    idColor: "#c0437a",
     label: "HIGH",
-    labelBg: "rgba(238, 80, 145, 0.1)",
-    labelColor: "#D03B82",
-    fixColor: "#8A50D8",
+    labelBg: "rgba(238,80,145,0.10)",
+    labelColor: "#c0437a",
+    fixColor: "#64748B",
   },
   MEDIUM: {
-    bg: "rgba(252, 121, 66, 0.05)",
-    border: "#FC7942",
-    idBg: "rgba(252, 121, 66, 0.12)",
-    idColor: "#D96030",
+    bg: "#ffffff",
+    border: "#D48B65",
+    idBg: "rgba(252,121,66,0.10)",
+    idColor: "#b85a28",
     label: "MEDIUM",
-    labelBg: "rgba(252, 121, 66, 0.1)",
-    labelColor: "#C05520",
-    fixColor: "#199FD7",
+    labelBg: "rgba(252,121,66,0.10)",
+    labelColor: "#b85a28",
+    fixColor: "#64748B",
   },
   LOW: {
-    bg: "rgba(148, 163, 184, 0.04)",
-    border: "#CBD5E1",
-    idBg: "rgba(148, 163, 184, 0.08)",
+    bg: "#ffffff",
+    border: "#94A3B8",
+    idBg: "rgba(148,163,184,0.10)",
     idColor: "#64748B",
     label: "CONTEXT",
-    labelBg: "rgba(148, 163, 184, 0.07)",
+    labelBg: "rgba(148,163,184,0.10)",
     labelColor: "#64748B",
-    fixColor: "#64748B",
+    fixColor: "#94A3B8",
   },
   INFO: {
-    bg: "rgba(148, 163, 184, 0.04)",
-    border: "#E2E8F0",
-    idBg: "rgba(148, 163, 184, 0.07)",
+    bg: "#ffffff",
+    border: "#CBD5E1",
+    idBg: "rgba(148,163,184,0.08)",
     idColor: "#94A3B8",
     label: "CONTEXT",
-    labelBg: "rgba(148, 163, 184, 0.06)",
+    labelBg: "rgba(148,163,184,0.08)",
     labelColor: "#94A3B8",
-    fixColor: "#64748B",
+    fixColor: "#94A3B8",
   },
 };
 
@@ -55,7 +55,7 @@ export function FindingItem({ finding, showId = true }: FindingItemProps) {
   return (
     <div
       className="rounded-xl px-4 py-4 mb-3 last:mb-0"
-      style={{ backgroundColor: cfg.bg, borderLeft: `3px solid ${cfg.border}` }}
+      style={{ backgroundColor: cfg.bg, borderTop: "1px solid #E2E8F0", borderRight: "1px solid #E2E8F0", borderBottom: "1px solid #E2E8F0", borderLeft: `3px solid ${cfg.border}` }}
     >
       <div className="flex items-start gap-3">
         {showId && (
@@ -87,6 +87,20 @@ export function FindingItem({ finding, showId = true }: FindingItemProps) {
               Fix: {finding.fix}
             </p>
           </div>
+          {finding.customers && finding.customers.length > 0 && (
+            <div className="flex items-center gap-1.5 mt-2.5 pt-2.5" style={{ borderTop: "1px solid #F1F5F9" }}>
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" />
+              </svg>
+              <div className="flex flex-wrap gap-1">
+                {finding.customers.map((c) => (
+                  <span key={c} className="text-[0.6rem] font-semibold px-1.5 py-0.5 rounded" style={{ background: "#F1F5F9", color: "#475569" }}>
+                    {c}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

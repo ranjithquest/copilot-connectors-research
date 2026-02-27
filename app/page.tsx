@@ -11,6 +11,7 @@ import { StageAccordion }  from "@/components/StageAccordion";
 import { JourneyPainChart } from "@/components/JourneyPainChart";
 import { AdoSection }      from "@/components/AdoSection";
 import { QuoteBlock }      from "@/components/QuoteBlock";
+import { FindingItem }     from "@/components/FindingItem";
 
 const PRIMARY_BTN = "#1a1a1a";
 
@@ -34,12 +35,6 @@ function bgImage(url: string, overlay = LIGHT_OVERLAY) {
   };
 }
 
-const priorityColors: Record<string, string> = {
-  HIGH: "#EE5091",
-  MEDIUM: "#FC7942",
-  LOW: "#94A3B8",
-  INFO: "#94A3B8",
-};
 
 export default async function HomePage({
   searchParams,
@@ -50,26 +45,32 @@ export default async function HomePage({
   const isNewsletter = view !== "web";
 
   if (isNewsletter) {
-    // Shared label style for section eyebrows — Fluent Caption1
+    // Shared label style for section titles — Fluent Title3
     const SL: React.CSSProperties = {
-      fontSize: 11, fontWeight: 700, color: "#0078D4",
-      letterSpacing: "0.10em", textTransform: "uppercase",
-      display: "flex", alignItems: "center", gap: 6, marginBottom: 16,
+      fontSize: 15, fontWeight: 700, color: "#0f172a",
+      letterSpacing: "-0.01em",
+      display: "block", textAlign: "center", marginBottom: 20,
     };
     const sectionCard: React.CSSProperties = {
-      background: "#fff",
-      border: "1px solid #e8edf2",
-      borderRadius: 12,
-      padding: "20px 22px",
+      background: "rgba(255,255,255,0.97)",
+      borderRadius: 16,
+      padding: "28px 28px",
+      boxShadow: "0 4px 24px rgba(0,0,0,0.07), 0 1px 3px rgba(0,0,0,0.04)",
     };
 
     return (
-      <div style={{ background: "#f5f5f5", minHeight: "100vh" }}>
+      <div style={{
+        minHeight: "100vh",
+        backgroundImage: `linear-gradient(rgba(248,250,255,0.86), rgba(248,250,255,0.86)), url(https://cdn-dynmedia-1.microsoft.com/is/image/microsoftcorp/1076601-WhyMicrosoftBackground-1600x1020?resMode=sharp2&op_usm=1.5,0.65,15,0&wid=1600&hei=1020&qlt=100&fit=constrain)`,
+        backgroundSize: "cover",
+        backgroundPosition: "center top",
+        backgroundAttachment: "fixed",
+      }}>
 
         {/* ── 1. HEADER / HERO ──────────────────────────── */}
         <div className="nl-outer-pad" style={{ paddingBottom: 0 }}>
           <div style={{
-            backgroundImage: `linear-gradient(rgba(255,255,255,0.18), rgba(255,255,255,0.18)), url(https://cdn-dynmedia-1.microsoft.com/is/image/microsoftcorp/1076601-HeroBackground-1600x720?resMode=sharp2&op_usm=1.5,0.65,15,0&wid=1600&hei=720&qlt=100&fit=constrain)`,
+            backgroundImage: `url(https://cdn-dynmedia-1.microsoft.com/is/image/microsoftcorp/1076601-HeroBackground-1600x720?resMode=sharp2&op_usm=1.5,0.65,15,0&wid=1600&hei=720&qlt=100&fit=constrain)`,
             backgroundSize: "cover",
             backgroundPosition: "center",
             padding: "clamp(32px, 7vw, 56px) 28px",
@@ -78,14 +79,14 @@ export default async function HomePage({
             overflow: "hidden",
           }}>
             {/* Main title */}
-            <h1 style={{ fontSize: "clamp(1.6rem, 3.5vw, 2.4rem)", fontWeight: 700, letterSpacing: "-0.03em", lineHeight: 1.1, margin: 0, color: "#1B1B1B" }}>
-              Copilot Connector <span className="copilot-text">Research</span>
+            <h1 style={{ fontSize: "clamp(1.6rem, 3.5vw, 2.4rem)", fontWeight: 700, letterSpacing: "-0.03em", lineHeight: 1.1, margin: 0, color: "rgb(42,68,111)" }}>
+              Copilot Connector Research
             </h1>
             {/* Sub-heading + session count */}
-            <p style={{ fontSize: 15, color: "#616161", margin: "6px 0 0", fontWeight: 500 }}>
+            <p style={{ fontSize: 16, color: "rgb(42,68,111)", margin: "10px 0 0", fontWeight: 500, opacity: 0.90 }}>
               Admin Experience
             </p>
-            <p style={{ fontSize: 12, color: "#888", margin: "4px 0 0", fontWeight: 400 }}>
+            <p style={{ fontSize: 16, color: "rgb(42,68,111)", margin: "4px 0 0", fontWeight: 400, opacity: 0.65 }}>
               12 Admin sessions · 8 Companies · Jan &amp; Feb
             </p>
             {/* Customer logo strip */}
@@ -107,7 +108,7 @@ export default async function HomePage({
                   fontWeight: 700,
                   letterSpacing: co.name === co.name.toUpperCase() ? "0.04em" : 0,
                   color: co.color,
-                  background: co.bg ?? "rgba(255,255,255,0.55)",
+                  background: co.bg ?? "rgba(255,255,255,0.72)",
                   borderRadius: 6,
                   padding: "3px 8px",
                   backdropFilter: "blur(4px)",
@@ -130,11 +131,8 @@ export default async function HomePage({
         <div className="nl-outer-pad">
 
           {/* ── 2. JOURNEY STAGES + PAIN MAP (full width) ──── */}
-          <div style={{ ...sectionCard, marginBottom: 20 }}>
-            <p style={SL}>
-              <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#0078D4", display: "inline-block" }} />
-              Customer Experience Analysis
-            </p>
+          <div style={{ ...sectionCard, marginBottom: 24 }}>
+            <p style={SL} className="copilot-text">Customer Experience Analysis</p>
             {/* 5 stage summary cards in a horizontal row */}
             <div className="nl-stages-grid">
               {stages.map((stage) => {
@@ -142,8 +140,10 @@ export default async function HomePage({
                 const mc = stage.findings.filter(f => f.priority === "MEDIUM").length;
                 return (
                   <div key={stage.number} style={{
-                    background: "#f8fafc", border: "1px solid #e8edf2",
-                    borderRadius: 10, padding: "12px 14px",
+                    background: "#f8fafc",
+                    border: "1px solid #e8edf2",
+                    borderLeft: `3px solid ${(["#199FD7","#8A50D8","#EE5091","#FC7942","#99BD3C"])[stage.number - 1]}`,
+                    borderRadius: 10, padding: "14px 16px",
                   }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
                       <div style={{ display: "flex", gap: 3 }}>
@@ -159,106 +159,57 @@ export default async function HomePage({
                         )}
                       </div>
                     </div>
-                    <p style={{ fontSize: 14, fontWeight: 600, color: "#0f172a", lineHeight: 1.35, margin: 0 }}>{stage.title}</p>
+                    <p style={{ fontSize: 15, fontWeight: 600, color: "#0f172a", lineHeight: 1.35, margin: 0 }}>{stage.title}</p>
                   </div>
                 );
               })}
             </div>
             {/* Pain map chart — full width */}
-            <div style={{ borderTop: "1px solid #f1f5f9", paddingTop: 16 }}>
+            <div>
               <JourneyPainChart points={chartPoints} />
             </div>
           </div>
 
           {/* ── 3. THEMES (full width, 2-col grid of cards) ── */}
-          <div style={{ ...sectionCard, marginBottom: 20 }}>
-            <p style={SL}>
-              <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#0078D4", display: "inline-block" }} />
-              Critical Themes Identified
-            </p>
-            <div className="nl-themes-grid">
+          <div style={{ ...sectionCard, marginBottom: 24 }}>
+            <p style={SL} className="copilot-text">Critical Themes Identified</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-left">
               {themes.map((theme) => (
-                <div key={theme.slug} style={{
-                  borderLeft: `3px solid ${priorityColors[theme.priority] ?? "#94A3B8"}`,
-                  background: `${priorityColors[theme.priority] ?? "#94A3B8"}08`,
-                  borderRadius: "0 8px 8px 0",
-                  padding: "10px 12px",
-                }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap", marginBottom: 5 }}>
-                    <span style={{ fontSize: 15, fontWeight: 600, color: "#0f172a" }}>{theme.title}</span>
-                    <span style={{
-                      fontSize: 10, fontWeight: 700,
-                      color: priorityColors[theme.priority],
-                      background: `${priorityColors[theme.priority]}22`,
-                      padding: "2px 8px", borderRadius: 999,
-                    }}>
-                      {theme.priority}
-                    </span>
-                  </div>
-                  <p style={{ fontSize: 13, color: "#64748b", lineHeight: 1.5, margin: 0 }}>{theme.subtitle}</p>
-                  <p style={{ fontSize: 11, color: "#94a3b8", marginTop: 6 }}>
-                    {theme.findingIds.length} findings · stages {theme.affectedStages.join(", ")}
-                  </p>
-                </div>
+                <ThemeCard key={theme.slug} theme={theme} findingCount={findingsForTheme(theme.slug).length} />
               ))}
             </div>
           </div>
 
           {/* ── 4. ALL FINDINGS ───────────────────────────── */}
-          <div style={{ ...sectionCard, marginBottom: 20 }}>
-            <p style={SL}>
-              <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#0078D4", display: "inline-block" }} />
-              All Findings
-            </p>
+          <div style={{ ...sectionCard, marginBottom: 24 }}>
+            <p style={SL} className="copilot-text">All Findings</p>
             {stages.map((stage, si) => (
               <div key={stage.number} style={{ marginBottom: si < stages.length - 1 ? 24 : 0 }}>
                 {/* Stage header */}
                 <div style={{
                   display: "flex", alignItems: "center", gap: 10,
                   background: "#f8fafc", borderRadius: 8,
-                  padding: "8px 12px", marginBottom: 10,
+                  padding: "10px 14px", marginBottom: 14,
                   border: "1px solid #e8edf2",
                 }}>
-                  <span style={{ fontSize: 15, fontWeight: 600, color: "#243A5E" }}>{stage.title}</span>
+                  <span style={{ fontSize: 16, fontWeight: 600, color: "#243A5E" }}>{stage.title}</span>
                 </div>
-                {/* 2-col findings grid */}
                 <div className="nl-findings-grid">
-                  {stage.findings.map((f, fi) => (
-                    <div key={f.id} style={{
-                      display: "flex", alignItems: "flex-start", gap: 8,
-                      padding: "8px 10px",
-                      background: fi % 2 === 0 ? "#fafbfc" : "#fff",
-                      borderRadius: 6,
-                      border: "1px solid #f1f5f9",
-                    }}>
-                      <span style={{
-                        fontSize: 10, fontWeight: 700,
-                        color: priorityColors[f.priority],
-                        background: `${priorityColors[f.priority]}15`,
-                        border: `1px solid ${priorityColors[f.priority]}35`,
-                        padding: "2px 7px", borderRadius: 999,
-                        whiteSpace: "nowrap", marginTop: 1, flexShrink: 0,
-                      }}>
-                        {f.priority === "INFO" ? "CTX" : f.priority === "MEDIUM" ? "MED" : "HIGH"}
-                      </span>
-                      <span style={{ color: "#c0cad6", fontSize: 11, fontWeight: 600, minWidth: 30, marginTop: 1, flexShrink: 0 }}>{f.id}</span>
-                      <div style={{ minWidth: 0 }}>
-                        <p style={{ fontSize: 14, fontWeight: 600, color: "#1e293b", lineHeight: 1.45, margin: 0 }}>{f.title}</p>
-                        <p style={{ fontSize: 13, color: "#8A50D8", marginTop: 4, lineHeight: 1.45 }}>→ {f.fix}</p>
-                      </div>
-                    </div>
-                  ))}
+                  {stage.findings.map((f) => <FindingItem key={f.id} finding={f} />)}
                 </div>
               </div>
             ))}
           </div>
 
           {/* ── 5. CUSTOMER VOICES ────────────────────────── */}
-          <div style={{ ...sectionCard, marginBottom: 20 }}>
-            <p style={SL}>
-              <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#0078D4", display: "inline-block" }} />
-              Customer Voices
-            </p>
+          <div style={{
+            ...sectionCard,
+            marginBottom: 20,
+            backgroundImage: `linear-gradient(rgba(248,244,255,0.92), rgba(248,244,255,0.92)), url(https://cdn-dynmedia-1.microsoft.com/is/image/microsoftcorp/1076601-CustomerStoriesBackground-1600x1268?resMode=sharp2&op_usm=1.5,0.65,15,0&wid=1600&hei=1268&qlt=100&fit=constrain)`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}>
+            <p style={SL} className="copilot-text">Customer Voices</p>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(270px, 1fr))", gap: 14 }}>
               {stages.map((stage) => (
                 <QuoteBlock key={stage.number} quote={stage.quote} attribution={stage.quoteAttribution} />
@@ -267,12 +218,38 @@ export default async function HomePage({
           </div>
 
           {/* ── 6. ADO PLANNING ───────────────────────────── */}
-          <div style={sectionCard}>
-            <p style={SL}>
-              <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#0078D4", display: "inline-block" }} />
-              ADO Planning Links
-            </p>
+          <div style={{ ...sectionCard, marginBottom: 24 }}>
+            <p style={SL} className="copilot-text">Product Roadmap Record</p>
             <AdoSection items={adoPlanningItems} />
+          </div>
+
+          {/* ── 7. RESEARCH TEAM ─────────────────────────── */}
+          <div style={sectionCard}>
+            <p style={SL} className="copilot-text">Research Team</p>
+            <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 32, marginTop: 12 }}>
+              {[
+                { name: "Mansi Pakhale",    title: "Product Manager II",        initials: "MP", color: "#8A50D8" },
+                { name: "Ranjith Ravi",     title: "Senior Product Designer",   initials: "RR", color: "#199FD7" },
+                { name: "Saugata Pramanik", title: "Product Designer",          initials: "SP", color: "#EE5091" },
+                { name: "Gargy Shekhar",    title: "Principal Product Manager", initials: "GS", color: "#FC7942" },
+                { name: "Rohan Baruah",     title: "Principal Design Manager",  initials: "RB", color: "#99BD3C" },
+              ].map((person) => (
+                <div key={person.name} style={{ textAlign: "center", width: 96 }}>
+                  <div style={{
+                    width: 64, height: 64, borderRadius: "50%",
+                    background: `linear-gradient(135deg, ${person.color}, #8A50D8)`,
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    margin: "0 auto 10px",
+                    fontSize: 18, fontWeight: 700, color: "#fff",
+                    boxShadow: `0 4px 16px ${person.color}55`,
+                  }}>
+                    {person.initials}
+                  </div>
+                  <p style={{ fontSize: 14, fontWeight: 700, color: "#0f172a", margin: 0, lineHeight: 1.3 }}>{person.name}</p>
+                  <p style={{ fontSize: 12, color: "#64748b", margin: "3px 0 0", lineHeight: 1.4 }}>{person.title}</p>
+                </div>
+              ))}
+            </div>
           </div>
 
         </div>
