@@ -1,0 +1,110 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Copilot Brand Palette ──────────────────── */
+:root {
+  --copilot-blue:   #199FD7;
+  --copilot-purple: #8A50D8;
+  --copilot-pink:   #EE5091;
+  --copilot-orange: #FC7942;
+  --copilot-green:  #99BD3C;
+
+  /* The signature Copilot ribbon gradient */
+  --copilot-ribbon: linear-gradient(90deg, #199FD7 0%, #8A50D8 40%, #EE5091 72%, #FC7942 100%);
+  --copilot-ribbon-diag: linear-gradient(135deg, #199FD7 0%, #8A50D8 40%, #EE5091 72%, #FC7942 100%);
+
+  /* Priority */
+  --priority-high:   #EE5091;
+  --priority-medium: #FC7942;
+  --priority-low:    #94A3B8;
+}
+
+/* ─── Base ────────────────────────────────────── */
+@layer base {
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
+    background: #F5F7FA;
+    color: #0F172A;
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+/* ─── Utilities ───────────────────────────────── */
+@layer utilities {
+
+  /* Copilot ribbon gradient text */
+  .copilot-text {
+    background: var(--copilot-ribbon);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* ─── Hero: light gradient with soft Copilot-color wash ── */
+  .copilot-hero-bg {
+    background-color: #f8f5ff;
+    background-image:
+      radial-gradient(ellipse at 15% 60%, rgba(138,80,216,0.13) 0%, transparent 52%),
+      radial-gradient(ellipse at 85% 20%, rgba(25,159,215,0.10) 0%, transparent 48%),
+      radial-gradient(ellipse at 55% 90%, rgba(238,80,145,0.08) 0%, transparent 45%),
+      radial-gradient(ellipse at 90% 75%, rgba(252,121,66,0.07) 0%, transparent 40%),
+      linear-gradient(160deg, #fafbff 0%, #f4eeff 35%, #fce8f5 65%, #fff6f0 100%);
+  }
+
+  /* ─── White navigation bar ── */
+  .nav-white {
+    background: rgba(255, 255, 255, 0.97);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+  }
+
+  /* ─── Soft accent section (replaces dark summary) ── */
+  .accent-section {
+    background: linear-gradient(160deg, #f8f4ff 0%, #ede5ff 35%, #fce4f2 65%, #fff0eb 100%);
+  }
+
+  /* ─── Light section backgrounds ── */
+  .light-section {
+    background: #FFFFFF;
+  }
+  .off-white-section {
+    background: #F5F7FA;
+  }
+
+  /* ─── Subtle card ── */
+  .subtle-card {
+    background: rgba(255,255,255,0.85);
+    border: 1px solid rgba(0,0,0,0.07);
+    backdrop-filter: blur(8px);
+  }
+
+  /* ─── Large editorial stat ── */
+  .stat-number {
+    font-size: clamp(2.75rem, 5.5vw, 5rem);
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: -0.04em;
+  }
+
+  /* ─── Section eyebrow ── */
+  .eyebrow {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  /* ─── Glow shadow on hover ── */
+  .hover\:shadow-glow-purple:hover {
+    box-shadow: 0 8px 28px rgba(138,80,216,0.35);
+  }
+}
+
+/* ─── Scrollbar ───────────────────────────────── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
