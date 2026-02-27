@@ -152,10 +152,7 @@ export function JourneyPainChart({ points }: JourneyPainChartProps) {
         {stageX.map((x, i) => (
           <g key={i}>
             <line x1={x} y1={PAD_TOP} x2={x} y2={CHART_H - PAD_BOTTOM} stroke="#DDE5EE" strokeWidth={1} strokeDasharray="3,3" />
-            <text x={x} y={CHART_H - PAD_BOTTOM + 14} fontSize={9.5} fill="#374151" textAnchor="middle" fontWeight={700}>
-              Stage {i + 1}
-            </text>
-            <text x={x} y={CHART_H - PAD_BOTTOM + 26} fontSize={8.5} fill="#94A3B8" textAnchor="middle">
+            <text x={x} y={CHART_H - PAD_BOTTOM + 16} fontSize={9.5} fill="#374151" textAnchor="middle" fontWeight={700}>
               {stageLabels[i]}
             </text>
           </g>
@@ -245,7 +242,7 @@ export function JourneyPainChart({ points }: JourneyPainChartProps) {
       </svg>
 
       {/* Legend */}
-      <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+      <div className="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
         <div>
           <p className="font-bold text-red-600 mb-1">● HIGH SEVERITY (H1–H16)</p>
           {plotted.filter(p => p.severity === "HIGH").slice(0, 8).map(p => (

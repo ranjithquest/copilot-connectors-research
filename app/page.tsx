@@ -1,3 +1,4 @@
+import type React from "react";
 import {
   stages,
   themes,
@@ -49,131 +50,198 @@ export default async function HomePage({
   const isNewsletter = view !== "web";
 
   if (isNewsletter) {
-    return (
-      <div style={{ background: "#fff", minHeight: "100vh" }}>
+    // Shared label style for section eyebrows
+    const SL: React.CSSProperties = {
+      fontSize: 10, fontWeight: 700, color: "#0078D4",
+      letterSpacing: "0.08em", textTransform: "uppercase",
+      display: "flex", alignItems: "center", gap: 6, marginBottom: 14,
+    };
+    const sectionCard: React.CSSProperties = {
+      background: "#fff",
+      border: "1px solid #e8edf2",
+      borderRadius: 12,
+      padding: "20px 22px",
+    };
 
-        {/* ── 1. HEADER STRIP ───────────────────────────── */}
-        <div style={{ borderBottom: "1px solid #f1f5f9", padding: "20px 24px" }}>
-          <div style={{ maxWidth: 960, margin: "0 auto", display: "flex", alignItems: "baseline", gap: 16, flexWrap: "wrap" }}>
-            <h1 style={{ fontSize: "clamp(1.25rem, 2.5vw, 1.75rem)", fontWeight: 800, color: "#0f172a", letterSpacing: "-0.03em", lineHeight: 1.1, margin: 0 }}>
-              Connector Admin <span className="copilot-text">Experience</span>
-            </h1>
-            <p style={{ fontSize: 13, color: "#94a3b8", margin: 0 }}>
-              Research Brief · EY, Alpha Bank &amp; more · 5 stages · 6 themes · 30 findings
-            </p>
+    return (
+      <div style={{ background: "#f0f4f8", minHeight: "100vh" }}>
+
+        {/* ── 1. HEADER ─────────────────────────────────── */}
+        <div style={{
+          background: "#fff",
+          borderBottom: "1px solid #e8edf2",
+          padding: "22px 32px",
+        }}>
+          <div style={{ maxWidth: 980, margin: "0 auto" }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
+              <div>
+                <h1 style={{ fontSize: "clamp(1.2rem, 2.5vw, 1.6rem)", fontWeight: 800, color: "#0f172a", letterSpacing: "-0.03em", lineHeight: 1.1, margin: 0 }}>
+                  Connector Admin <span className="copilot-text">Experience</span>
+                </h1>
+                <p style={{ fontSize: 12, color: "#94a3b8", margin: "4px 0 0" }}>
+                  Research Brief · EY, Alpha Bank &amp; more
+                </p>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* ── 2. THEMES + STAGES OVERVIEW (side-by-side) ── */}
-        <div style={{ maxWidth: 960, margin: "0 auto", padding: "20px 24px 0" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr) minmax(0,1fr)", gap: 24 }}>
+        <div style={{ maxWidth: 980, margin: "0 auto", padding: "24px 32px 32px" }}>
 
-            {/* LEFT: 6 Themes */}
-            <div>
-              <p style={{ fontSize: 10, fontWeight: 700, color: "#94a3b8", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 10 }}>6 Cross-Stage Themes</p>
+          {/* ── 2. THEMES (full width, 2-col grid of cards) ── */}
+          <div style={{ ...sectionCard, marginBottom: 20 }}>
+            <p style={SL}>
+              <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#0078D4", display: "inline-block" }} />
+              Cross-Stage Themes
+            </p>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10 }}>
               {themes.map((theme) => (
                 <div key={theme.slug} style={{
                   borderLeft: `3px solid ${priorityColors[theme.priority] ?? "#94A3B8"}`,
-                  paddingLeft: 10, padding: "7px 0 7px 10px",
-                  marginBottom: 5, background: "#fafafa",
-                  borderRadius: "0 6px 6px 0",
+                  background: `${priorityColors[theme.priority] ?? "#94A3B8"}08`,
+                  borderRadius: "0 8px 8px 0",
+                  padding: "10px 12px",
                 }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap", marginBottom: 3 }}>
                     <span style={{ fontSize: 12, fontWeight: 700, color: "#0f172a" }}>{theme.title}</span>
-                    <span style={{ fontSize: 9, fontWeight: 700, color: priorityColors[theme.priority], background: `${priorityColors[theme.priority]}18`, padding: "1px 6px", borderRadius: 999 }}>
+                    <span style={{
+                      fontSize: 9, fontWeight: 700,
+                      color: priorityColors[theme.priority],
+                      background: `${priorityColors[theme.priority]}22`,
+                      padding: "2px 7px", borderRadius: 999,
+                    }}>
                       {theme.priority}
                     </span>
-                    <span style={{ fontSize: 9, color: "#94a3b8", marginLeft: "auto" }}>
-                      {theme.findingIds.length}f · s{theme.affectedStages.join(",")}
-                    </span>
                   </div>
-                  <p style={{ fontSize: 11, color: "#64748b", marginTop: 2, lineHeight: 1.35 }}>{theme.subtitle}</p>
+                  <p style={{ fontSize: 11, color: "#64748b", lineHeight: 1.4, margin: 0 }}>{theme.subtitle}</p>
+                  <p style={{ fontSize: 9, color: "#94a3b8", marginTop: 4 }}>
+                    {theme.findingIds.length} findings · stages {theme.affectedStages.join(", ")}
+                  </p>
                 </div>
               ))}
             </div>
+          </div>
 
-            {/* RIGHT: 5 Stage rows */}
-            <div>
-              <p style={{ fontSize: 10, fontWeight: 700, color: "#94a3b8", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 10 }}>5 Journey Stages</p>
+          {/* ── 3. JOURNEY STAGES + PAIN MAP (full width) ──── */}
+          <div style={{ ...sectionCard, marginBottom: 20 }}>
+            <p style={SL}>
+              <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#0078D4", display: "inline-block" }} />
+              Copilot Connector Experience Analysis
+            </p>
+            {/* 5 stage summary cards in a horizontal row */}
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 10, marginBottom: 20 }}>
               {stages.map((stage) => {
                 const hc = stage.findings.filter(f => f.priority === "HIGH").length;
                 const mc = stage.findings.filter(f => f.priority === "MEDIUM").length;
                 return (
-                  <div key={stage.number} style={{ display: "flex", alignItems: "center", gap: 10, padding: "9px 0", borderBottom: "1px solid #f8fafc" }}>
-                    <span style={{ width: 22, height: 22, borderRadius: "50%", background: "#0078D4", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 700, flexShrink: 0 }}>
-                      {stage.number}
-                    </span>
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <p style={{ fontSize: 12, fontWeight: 600, color: "#0f172a", lineHeight: 1.2, margin: 0 }}>{stage.title}</p>
-                      <p style={{ fontSize: 10, color: "#94a3b8", margin: "1px 0 0" }}>{stage.subtitle}</p>
+                  <div key={stage.number} style={{
+                    background: "#f8fafc", border: "1px solid #e8edf2",
+                    borderRadius: 10, padding: "12px 14px",
+                  }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
+                      <span style={{
+                        width: 24, height: 24, borderRadius: "50%",
+                        background: "#0078D4", color: "#fff",
+                        display: "flex", alignItems: "center", justifyContent: "center",
+                        fontSize: 11, fontWeight: 700, flexShrink: 0,
+                      }}>
+                        {stage.number}
+                      </span>
+                      <div style={{ display: "flex", gap: 3 }}>
+                        {hc > 0 && (
+                          <span style={{ fontSize: 9, fontWeight: 700, color: "#EE5091", background: "#EE509115", border: "1px solid #EE509130", padding: "1px 6px", borderRadius: 999 }}>
+                            {hc}H
+                          </span>
+                        )}
+                        {mc > 0 && (
+                          <span style={{ fontSize: 9, fontWeight: 700, color: "#FC7942", background: "#FC794215", border: "1px solid #FC794230", padding: "1px 6px", borderRadius: 999 }}>
+                            {mc}M
+                          </span>
+                        )}
+                      </div>
                     </div>
-                    <div style={{ display: "flex", gap: 3, flexShrink: 0 }}>
-                      {hc > 0 && <span style={{ fontSize: 9, fontWeight: 700, color: "#EE5091", background: "#EE509118", padding: "2px 6px", borderRadius: 999 }}>{hc}H</span>}
-                      {mc > 0 && <span style={{ fontSize: 9, fontWeight: 700, color: "#FC7942", background: "#FC794218", padding: "2px 6px", borderRadius: 999 }}>{mc}M</span>}
-                    </div>
+                    <p style={{ fontSize: 11, fontWeight: 700, color: "#0f172a", lineHeight: 1.3, margin: 0 }}>{stage.title}</p>
                   </div>
                 );
               })}
             </div>
-          </div>
-        </div>
-
-        {/* ── 3. PAIN MAP ───────────────────────────────── */}
-        <div style={{ maxWidth: 960, margin: "0 auto", padding: "20px 24px 0" }}>
-          <p style={{ fontSize: 10, fontWeight: 700, color: "#94a3b8", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 10 }}>Journey Pain Map</p>
-          <JourneyPainChart points={chartPoints} />
-        </div>
-
-        {/* ── 4. ALL FINDINGS (compact rows, grouped by stage) */}
-        <div style={{ maxWidth: 960, margin: "0 auto", padding: "20px 24px 0" }}>
-          <p style={{ fontSize: 10, fontWeight: 700, color: "#94a3b8", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 12 }}>All Findings</p>
-          {stages.map((stage) => (
-            <div key={stage.number} style={{ marginBottom: 18 }}>
-              {/* Stage divider row */}
-              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
-                <span style={{ width: 18, height: 18, borderRadius: "50%", background: "#0078D4", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 10, fontWeight: 700, flexShrink: 0 }}>
-                  {stage.number}
-                </span>
-                <span style={{ fontSize: 11, fontWeight: 700, color: "#334155" }}>{stage.title}</span>
-                <div style={{ flex: 1, height: 1, background: "#f1f5f9" }} />
-              </div>
-              {/* 2-col findings grid */}
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2px 20px" }}>
-                {stage.findings.map((f) => (
-                  <div key={f.id} style={{ display: "flex", alignItems: "flex-start", gap: 7, padding: "6px 0", borderBottom: "1px solid #f8fafc" }}>
-                    <span style={{
-                      fontSize: 9, fontWeight: 700,
-                      color: priorityColors[f.priority],
-                      background: `${priorityColors[f.priority]}18`,
-                      padding: "2px 5px", borderRadius: 999,
-                      whiteSpace: "nowrap", marginTop: 2, flexShrink: 0,
-                    }}>
-                      {f.priority === "INFO" ? "CTX" : f.priority === "MEDIUM" ? "MED" : "HIGH"}
-                    </span>
-                    <span style={{ color: "#cbd5e1", fontSize: 10, fontWeight: 700, minWidth: 26, marginTop: 2, flexShrink: 0 }}>{f.id}</span>
-                    <div style={{ minWidth: 0 }}>
-                      <p style={{ fontSize: 12, fontWeight: 600, color: "#0f172a", lineHeight: 1.3, margin: 0 }}>{f.title}</p>
-                      <p style={{ fontSize: 10, color: "#8A50D8", marginTop: 2, lineHeight: 1.3 }}>→ {f.fix}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
+            {/* Pain map chart — full width */}
+            <div style={{ borderTop: "1px solid #f1f5f9", paddingTop: 16 }}>
+              <JourneyPainChart points={chartPoints} />
             </div>
-          ))}
-        </div>
+          </div>
 
-        {/* ── 5. CUSTOMER VOICES ────────────────────────── */}
-        <div style={{ background: "#fafafa", borderTop: "1px solid #f1f5f9", padding: "20px 24px 28px", marginTop: 20 }}>
-          <div style={{ maxWidth: 960, margin: "0 auto" }}>
-            <p style={{ fontSize: 10, fontWeight: 700, color: "#94a3b8", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 12 }}>Customer Voices</p>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 12 }}>
+          {/* ── 4. ALL FINDINGS ───────────────────────────── */}
+          <div style={{ ...sectionCard, marginBottom: 20 }}>
+            <p style={SL}>
+              <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#0078D4", display: "inline-block" }} />
+              All Findings
+            </p>
+            {stages.map((stage, si) => (
+              <div key={stage.number} style={{ marginBottom: si < stages.length - 1 ? 24 : 0 }}>
+                {/* Stage header */}
+                <div style={{
+                  display: "flex", alignItems: "center", gap: 10,
+                  background: "#f8fafc", borderRadius: 8,
+                  padding: "8px 12px", marginBottom: 10,
+                  border: "1px solid #e8edf2",
+                }}>
+                  <span style={{
+                    width: 20, height: 20, borderRadius: "50%",
+                    background: "#243A5E", color: "#fff",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    fontSize: 10, fontWeight: 700, flexShrink: 0,
+                  }}>
+                    {stage.number}
+                  </span>
+                  <span style={{ fontSize: 12, fontWeight: 700, color: "#243A5E" }}>{stage.title}</span>
+                </div>
+                {/* 2-col findings grid */}
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4px 24px" }}>
+                  {stage.findings.map((f, fi) => (
+                    <div key={f.id} style={{
+                      display: "flex", alignItems: "flex-start", gap: 8,
+                      padding: "8px 10px",
+                      background: fi % 2 === 0 ? "#fafbfc" : "#fff",
+                      borderRadius: 6,
+                      border: "1px solid #f1f5f9",
+                    }}>
+                      <span style={{
+                        fontSize: 9, fontWeight: 700,
+                        color: priorityColors[f.priority],
+                        background: `${priorityColors[f.priority]}15`,
+                        border: `1px solid ${priorityColors[f.priority]}35`,
+                        padding: "2px 6px", borderRadius: 999,
+                        whiteSpace: "nowrap", marginTop: 1, flexShrink: 0,
+                      }}>
+                        {f.priority === "INFO" ? "CTX" : f.priority === "MEDIUM" ? "MED" : "HIGH"}
+                      </span>
+                      <span style={{ color: "#c0cad6", fontSize: 10, fontWeight: 700, minWidth: 28, marginTop: 1, flexShrink: 0 }}>{f.id}</span>
+                      <div style={{ minWidth: 0 }}>
+                        <p style={{ fontSize: 12, fontWeight: 600, color: "#1e293b", lineHeight: 1.35, margin: 0 }}>{f.title}</p>
+                        <p style={{ fontSize: 10, color: "#8A50D8", marginTop: 3, lineHeight: 1.35 }}>→ {f.fix}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* ── 5. CUSTOMER VOICES ────────────────────────── */}
+          <div style={sectionCard}>
+            <p style={SL}>
+              <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#0078D4", display: "inline-block" }} />
+              Customer Voices
+            </p>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(270px, 1fr))", gap: 14 }}>
               {stages.map((stage) => (
                 <QuoteBlock key={stage.number} quote={stage.quote} attribution={`${stage.quoteAttribution} · Stage ${stage.number}`} />
               ))}
             </div>
           </div>
-        </div>
 
+        </div>
       </div>
     );
   }
