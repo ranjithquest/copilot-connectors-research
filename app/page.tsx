@@ -2,8 +2,6 @@ import {
   stages,
   themes,
   chartPoints,
-  impactStats,
-  recommendedActions,
   adoPlanningItems,
   findingsForTheme,
 } from "@/data/research";
@@ -11,7 +9,7 @@ import { ThemeCard }       from "@/components/ThemeCard";
 import { StageAccordion }  from "@/components/StageAccordion";
 import { JourneyPainChart } from "@/components/JourneyPainChart";
 import { AdoSection }      from "@/components/AdoSection";
-import Link from "next/link";
+import { QuoteBlock }      from "@/components/QuoteBlock";
 
 const PRIMARY_BTN = "#1a1a1a";
 
@@ -20,7 +18,6 @@ const CDN = "https://cdn-dynmedia-1.microsoft.com/is/image/microsoftcorp";
 const IMG = {
   hero:    `${CDN}/629152-hero-workiq-desktop?resMode=sharp2&op_usm=1.5,0.65,15,0&wid=1600&hei=900&qlt=100&fit=constrain`,
   painMap: `${CDN}/176500-BG-Chat-EDIT?resMode=sharp2&op_usm=1.5,0.65,15,0&wid=2000&hei=1281&qlt=100&fit=constrain`,
-  summary: `${CDN}/6-BG-What_s-New?resMode=sharp2&op_usm=1.5,0.65,15,0&wid=2000&hei=1210&qlt=100&fit=constrain`,
   themes:  `${CDN}/176500-BG-Agent-EDIT?resMode=sharp2&op_usm=1.5,0.65,15,0&wid=2000&hei=1281&qlt=100&fit=constrain`,
   stages:  `${CDN}/176500-BG-Notebooks-EDIT?resMode=sharp2&op_usm=1.5,0.65,15,0&wid=2000&hei=1281&qlt=100&fit=constrain`,
   ado:     `${CDN}/BG%20-%20Get%20Started?resMode=sharp2&op_usm=1.5,0.65,15,0&wid=2000&hei=657&qlt=100&fit=constrain`,
@@ -36,7 +33,152 @@ function bgImage(url: string, overlay = LIGHT_OVERLAY) {
   };
 }
 
-export default function HomePage() {
+const priorityColors: Record<string, string> = {
+  HIGH: "#EE5091",
+  MEDIUM: "#FC7942",
+  LOW: "#94A3B8",
+  INFO: "#94A3B8",
+};
+
+export default async function HomePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ view?: string }>;
+}) {
+  const { view } = await searchParams;
+  const isNewsletter = view !== "web";
+
+  if (isNewsletter) {
+    return (
+      <div style={{ background: "#fff", minHeight: "100vh" }}>
+
+        {/* ── 1. HEADER STRIP ───────────────────────────── */}
+        <div style={{ borderBottom: "1px solid #f1f5f9", padding: "20px 24px" }}>
+          <div style={{ maxWidth: 960, margin: "0 auto", display: "flex", alignItems: "baseline", gap: 16, flexWrap: "wrap" }}>
+            <h1 style={{ fontSize: "clamp(1.25rem, 2.5vw, 1.75rem)", fontWeight: 800, color: "#0f172a", letterSpacing: "-0.03em", lineHeight: 1.1, margin: 0 }}>
+              Connector Admin <span className="copilot-text">Experience</span>
+            </h1>
+            <p style={{ fontSize: 13, color: "#94a3b8", margin: 0 }}>
+              Research Brief · EY, Alpha Bank &amp; more · 5 stages · 6 themes · 30 findings
+            </p>
+          </div>
+        </div>
+
+        {/* ── 2. THEMES + STAGES OVERVIEW (side-by-side) ── */}
+        <div style={{ maxWidth: 960, margin: "0 auto", padding: "20px 24px 0" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr) minmax(0,1fr)", gap: 24 }}>
+
+            {/* LEFT: 6 Themes */}
+            <div>
+              <p style={{ fontSize: 10, fontWeight: 700, color: "#94a3b8", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 10 }}>6 Cross-Stage Themes</p>
+              {themes.map((theme) => (
+                <div key={theme.slug} style={{
+                  borderLeft: `3px solid ${priorityColors[theme.priority] ?? "#94A3B8"}`,
+                  paddingLeft: 10, padding: "7px 0 7px 10px",
+                  marginBottom: 5, background: "#fafafa",
+                  borderRadius: "0 6px 6px 0",
+                }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
+                    <span style={{ fontSize: 12, fontWeight: 700, color: "#0f172a" }}>{theme.title}</span>
+                    <span style={{ fontSize: 9, fontWeight: 700, color: priorityColors[theme.priority], background: `${priorityColors[theme.priority]}18`, padding: "1px 6px", borderRadius: 999 }}>
+                      {theme.priority}
+                    </span>
+                    <span style={{ fontSize: 9, color: "#94a3b8", marginLeft: "auto" }}>
+                      {theme.findingIds.length}f · s{theme.affectedStages.join(",")}
+                    </span>
+                  </div>
+                  <p style={{ fontSize: 11, color: "#64748b", marginTop: 2, lineHeight: 1.35 }}>{theme.subtitle}</p>
+                </div>
+              ))}
+            </div>
+
+            {/* RIGHT: 5 Stage rows */}
+            <div>
+              <p style={{ fontSize: 10, fontWeight: 700, color: "#94a3b8", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 10 }}>5 Journey Stages</p>
+              {stages.map((stage) => {
+                const hc = stage.findings.filter(f => f.priority === "HIGH").length;
+                const mc = stage.findings.filter(f => f.priority === "MEDIUM").length;
+                return (
+                  <div key={stage.number} style={{ display: "flex", alignItems: "center", gap: 10, padding: "9px 0", borderBottom: "1px solid #f8fafc" }}>
+                    <span style={{ width: 22, height: 22, borderRadius: "50%", background: "#0078D4", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 700, flexShrink: 0 }}>
+                      {stage.number}
+                    </span>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <p style={{ fontSize: 12, fontWeight: 600, color: "#0f172a", lineHeight: 1.2, margin: 0 }}>{stage.title}</p>
+                      <p style={{ fontSize: 10, color: "#94a3b8", margin: "1px 0 0" }}>{stage.subtitle}</p>
+                    </div>
+                    <div style={{ display: "flex", gap: 3, flexShrink: 0 }}>
+                      {hc > 0 && <span style={{ fontSize: 9, fontWeight: 700, color: "#EE5091", background: "#EE509118", padding: "2px 6px", borderRadius: 999 }}>{hc}H</span>}
+                      {mc > 0 && <span style={{ fontSize: 9, fontWeight: 700, color: "#FC7942", background: "#FC794218", padding: "2px 6px", borderRadius: 999 }}>{mc}M</span>}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        {/* ── 3. PAIN MAP ───────────────────────────────── */}
+        <div style={{ maxWidth: 960, margin: "0 auto", padding: "20px 24px 0" }}>
+          <p style={{ fontSize: 10, fontWeight: 700, color: "#94a3b8", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 10 }}>Journey Pain Map</p>
+          <JourneyPainChart points={chartPoints} />
+        </div>
+
+        {/* ── 4. ALL FINDINGS (compact rows, grouped by stage) */}
+        <div style={{ maxWidth: 960, margin: "0 auto", padding: "20px 24px 0" }}>
+          <p style={{ fontSize: 10, fontWeight: 700, color: "#94a3b8", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 12 }}>All Findings</p>
+          {stages.map((stage) => (
+            <div key={stage.number} style={{ marginBottom: 18 }}>
+              {/* Stage divider row */}
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
+                <span style={{ width: 18, height: 18, borderRadius: "50%", background: "#0078D4", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 10, fontWeight: 700, flexShrink: 0 }}>
+                  {stage.number}
+                </span>
+                <span style={{ fontSize: 11, fontWeight: 700, color: "#334155" }}>{stage.title}</span>
+                <div style={{ flex: 1, height: 1, background: "#f1f5f9" }} />
+              </div>
+              {/* 2-col findings grid */}
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2px 20px" }}>
+                {stage.findings.map((f) => (
+                  <div key={f.id} style={{ display: "flex", alignItems: "flex-start", gap: 7, padding: "6px 0", borderBottom: "1px solid #f8fafc" }}>
+                    <span style={{
+                      fontSize: 9, fontWeight: 700,
+                      color: priorityColors[f.priority],
+                      background: `${priorityColors[f.priority]}18`,
+                      padding: "2px 5px", borderRadius: 999,
+                      whiteSpace: "nowrap", marginTop: 2, flexShrink: 0,
+                    }}>
+                      {f.priority === "INFO" ? "CTX" : f.priority === "MEDIUM" ? "MED" : "HIGH"}
+                    </span>
+                    <span style={{ color: "#cbd5e1", fontSize: 10, fontWeight: 700, minWidth: 26, marginTop: 2, flexShrink: 0 }}>{f.id}</span>
+                    <div style={{ minWidth: 0 }}>
+                      <p style={{ fontSize: 12, fontWeight: 600, color: "#0f172a", lineHeight: 1.3, margin: 0 }}>{f.title}</p>
+                      <p style={{ fontSize: 10, color: "#8A50D8", marginTop: 2, lineHeight: 1.3 }}>→ {f.fix}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* ── 5. CUSTOMER VOICES ────────────────────────── */}
+        <div style={{ background: "#fafafa", borderTop: "1px solid #f1f5f9", padding: "20px 24px 28px", marginTop: 20 }}>
+          <div style={{ maxWidth: 960, margin: "0 auto" }}>
+            <p style={{ fontSize: 10, fontWeight: 700, color: "#94a3b8", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 12 }}>Customer Voices</p>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 12 }}>
+              {stages.map((stage) => (
+                <QuoteBlock key={stage.number} quote={stage.quote} attribution={`${stage.quoteAttribution} · Stage ${stage.number}`} />
+              ))}
+            </div>
+          </div>
+        </div>
+
+      </div>
+    );
+  }
+
+  // ── WEB VIEW (default) ─────────────────────────────────────────────────────
   return (
     <>
       {/* ── HERO ───────────────────────────────────────── */}
@@ -91,70 +233,6 @@ export default function HomePage() {
             Pain severity mapped across all 5 stages. Hover each circle for the full finding.
           </p>
           <JourneyPainChart points={chartPoints} />
-        </div>
-      </section>
-
-      {/* ── EXECUTIVE SUMMARY ──────────────────────────── */}
-      <section id="summary" className="py-10 sm:py-16"
-        style={bgImage(IMG.summary, "rgba(248,244,255,0.78), rgba(248,244,255,0.78)")}>
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 text-center">
-          <p className="eyebrow mb-3 text-slate-500">Executive Summary</p>
-
-          <div className="max-w-3xl mx-auto mb-10 sm:mb-14">
-            <p className="font-light text-slate-800 leading-relaxed mb-4"
-              style={{ fontSize: "clamp(1rem, 2.5vw, 1.375rem)" }}>
-              Enterprise admins face{" "}
-              <strong className="font-semibold text-slate-900">compounding friction at every stage</strong>{" "}
-              of the Copilot Connectors journey.{" "}
-              <span className="text-slate-500">
-                What should be a 1–2 week setup routinely stretches into months — or ends in abandonment.
-              </span>
-            </p>
-            <p className="text-slate-400 text-sm leading-relaxed">
-              Root causes: poor discoverability · zero observability · auth failures · no feedback loops
-            </p>
-          </div>
-
-          {/* Impact stats */}
-          <div
-            className="grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-black/[0.07] mb-10 sm:mb-14 rounded-2xl overflow-hidden"
-            style={{ background: "rgba(255,255,255,0.85)", border: "1px solid rgba(0,0,0,0.07)", boxShadow: "0 4px 24px rgba(0,0,0,0.05)" }}
-          >
-            {impactStats.map((s) => (
-              <div key={s.label} className="py-6 sm:py-8 px-6 sm:px-8">
-                <div className="stat-number copilot-text">
-                  {s.value}
-                  <span className="text-xl sm:text-2xl font-light text-slate-400 ml-1">{s.unit}</span>
-                </div>
-                <p className="text-slate-500 text-sm mt-2">{s.label}</p>
-              </div>
-            ))}
-          </div>
-
-          {/* Three bets */}
-          <p className="eyebrow mb-4 text-slate-500">Three Bets That Would Move the Needle</p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 text-left">
-            {recommendedActions.map((action) => (
-              <div key={action.number}
-                className="group rounded-2xl p-5 sm:p-6 transition-all duration-200 hover:-translate-y-1 hover:shadow-lg"
-                style={{ background: "rgba(255,255,255,0.9)", border: "1px solid rgba(0,0,0,0.07)", boxShadow: "0 2px 12px rgba(0,0,0,0.05)" }}>
-                <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl flex items-center justify-center text-white font-bold text-sm mb-3 sm:mb-4"
-                  style={{ background: PRIMARY_BTN }}>
-                  {action.number}
-                </div>
-                <p className="text-slate-900 font-semibold text-sm leading-snug mb-2">{action.title}</p>
-                <p className="text-slate-500 text-xs leading-relaxed mb-4">{action.description}</p>
-                <Link href={`/themes/${action.themeSlug}`}
-                  className="inline-flex items-center gap-1.5 text-[0.65rem] font-bold uppercase tracking-wide transition-all group-hover:gap-2.5"
-                  style={{ color: "#8A50D8" }}>
-                  View theme
-                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M5 12h14M12 5l7 7-7 7" />
-                  </svg>
-                </Link>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 

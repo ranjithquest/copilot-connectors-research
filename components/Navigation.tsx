@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
-import { PersonaToggle } from "./PersonaToggle";
+import { useState, Suspense } from "react";
+import { ViewToggle } from "./ViewToggle";
 
 const navLinks = [
   { href: "/#pain-map", label: "Pain Map" },
@@ -20,21 +20,23 @@ export function Navigation() {
   return (
     <nav className="nav-white sticky top-0 z-50">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 flex items-center justify-between gap-4" style={{ height: "3.25rem" }}>
-        {/* Site name */}
-        <Link
-          href="/"
-          className="text-slate-900 text-sm font-semibold tracking-tight hover:text-slate-600 transition-colors shrink-0"
-          onClick={() => setMenuOpen(false)}
-        >
-          Copilot Connector Research
-        </Link>
-
-        {/* Persona toggle — centre of nav (desktop only on home) */}
-        {!isThemePage && (
-          <div className="hidden sm:flex flex-1 justify-center">
-            <PersonaToggle />
-          </div>
-        )}
+        {/* Site name + view toggle */}
+        <div className="flex items-center gap-3 shrink-0">
+          <Link
+            href="/"
+            className="text-slate-900 text-sm font-semibold tracking-tight hover:text-slate-600 transition-colors"
+            onClick={() => setMenuOpen(false)}
+          >
+            Copilot Connector Research
+          </Link>
+          {!isThemePage && (
+            <div className="hidden sm:block">
+              <Suspense>
+                <ViewToggle />
+              </Suspense>
+            </div>
+          )}
+        </div>
 
         {/* Right side */}
         <div className="flex items-center gap-1 shrink-0">
@@ -85,9 +87,11 @@ export function Navigation() {
       {/* Mobile dropdown */}
       {menuOpen && !isThemePage && (
         <div className="md:hidden border-t border-slate-100 bg-white px-4 py-3 space-y-1">
-          {/* Persona toggle on mobile */}
+          {/* View toggle on mobile */}
           <div className="flex justify-center pb-3 mb-1 border-b border-slate-100">
-            <PersonaToggle />
+            <Suspense>
+              <ViewToggle />
+            </Suspense>
           </div>
           {navLinks.map((link) => (
             <a
