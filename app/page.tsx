@@ -228,11 +228,11 @@ export default async function HomePage({
             <p style={SL} className="copilot-text">Research Team</p>
             <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 32, marginTop: 12 }}>
               {[
-                { name: "Mansi Pakhale",    title: "Product Manager II",        initials: "MP", color: "#8A50D8" },
-                { name: "Ranjith Ravi",     title: "Senior Product Designer",   initials: "RR", color: "#199FD7" },
-                { name: "Saugata Pramanik", title: "Product Designer",          initials: "SP", color: "#EE5091" },
                 { name: "Gargy Shekhar",    title: "Principal Product Manager", initials: "GS", color: "#FC7942" },
                 { name: "Rohan Baruah",     title: "Principal Design Manager",  initials: "RB", color: "#99BD3C" },
+                { name: "Mansi Pakhale",    title: "Product Manager II",        initials: "MP", color: "#8A50D8" },
+                { name: "Saugata Pramanik", title: "Product Designer",          initials: "SP", color: "#EE5091" },
+                { name: "Ranjith Ravi",     title: "Senior Product Designer",   initials: "RR", color: "#199FD7" },
               ].map((person) => (
                 <div key={person.name} style={{ textAlign: "center", width: 96 }}>
                   <div style={{
